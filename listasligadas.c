@@ -69,6 +69,7 @@ struct inteiro* insereposicao(struct inteiro* lista, int valor, int posicao)
     return lista;
 }
 
+
 int main()
 {
     struct inteiro *lista = NULL;

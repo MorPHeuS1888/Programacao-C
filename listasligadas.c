@@ -69,18 +69,35 @@ struct inteiro* insereposicao(struct inteiro* lista, int valor, int posicao)
     return lista;
 }
 
+void imprimeLista(struct inteiro* lista)
+{
+    int posicao = 0;
+    struct inteiro* listatemp = lista; 
+    while (listatemp != NULL)
+    {
+        printf("O elemento numero %d e' %d\n", posicao, listatemp->valor); 
+        posicao = posicao + 1;
+        listatemp = listatemp->next;
+    }
+    
+}
 
 int main()
 {
     struct inteiro *lista = NULL;
 
+    imprimeLista(lista);
     lista = insereInicio(lista, 7);
-    printf("O primeiro da lista e' %d\n", lista->valor);
+    printf("\nO primeiro da lista e' %d\n", lista->valor);
+    imprimeLista(lista);
     lista = insereInicio(lista, 12);
-    printf("O primeiro da lista e' %d\n", lista->valor);
+    printf("\nO primeiro da lista e' %d\n", lista->valor);
+    imprimeLista(lista);
     lista = insereFim(lista, 5);
-    printf("O primeiro da lista e' %d\n", lista->valor);
+    printf("\nO primeiro da lista e' %d\n", lista->valor);
+    imprimeLista(lista);
     lista = insereposicao(lista, 20, 2);
-    printf("O primeiro da lista e' %d\n", lista->valor);
+    printf("\nO primeiro da lista e' %d\n", lista->valor);
+    imprimeLista(lista);
     return 0;
 }

@@ -82,6 +82,26 @@ void imprimeLista(struct inteiro* lista)
     
 }
 
+float calcularMedia(struct inteiro* lista) {
+    int total = 0;
+    int somatotal = 0;
+    float media = 0.0;
+    struct inteiro* currentElemento = lista;
+    
+    while (currentElemento != NULL) {
+        total += currentElemento->valor;
+        somatotal++;
+        currentElemento = currentElemento->next;
+    }
+    
+    if (somatotal != 0){
+        media = (float)total / somatotal;
+
+    printf("A media dos numeros inteiros na lista e: %f\n", media);
+    }
+    return media;
+}
+
 int main()
 {
     struct inteiro *lista = NULL;
@@ -99,5 +119,8 @@ int main()
     lista = insereposicao(lista, 20, 2);
     printf("\nO primeiro da lista e' %d\n", lista->valor);
     imprimeLista(lista);
+
+    calcularMedia(lista);
+    
     return 0;
 }

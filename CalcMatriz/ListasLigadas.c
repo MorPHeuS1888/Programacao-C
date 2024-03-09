@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-struct inteiro
-{
-    int valor;
-    struct inteiro* next;
-};
+#include <ListasLigadas.h>
 
 struct inteiro* insereInicio(struct inteiro* lista, int valor)
 {
@@ -82,7 +77,8 @@ void imprimeLista(struct inteiro* lista)
     
 }
 
-float calcularMedia(struct inteiro* lista) {
+float calcularMedia(struct inteiro* lista) 
+{
     int total = 0;
     int somatotal = 0;
     float media = 0.0;
@@ -103,25 +99,50 @@ float calcularMedia(struct inteiro* lista) {
     return media;
 }
 
-int main()
+int contaElementos(struct inteiro* lista)
 {
-    struct inteiro *lista = NULL;
+    struct inteiro* currentElemento = lista;
+    int contador = 0;
+    while (currentElemento != NULL)
+    {
+        contador++;
+        currentElemento = currentElemento->next;
+    }
+    return contador;
+}
 
-    imprimeLista(lista);
-    lista = insereInicio(lista, 7);
-    printf("\nO primeiro da lista e' %d\n", lista->valor);
-    imprimeLista(lista);
-    lista = insereInicio(lista, 12);
-    printf("\nO primeiro da lista e' %d\n", lista->valor);
-    imprimeLista(lista);
-    lista = insereFim(lista, 5);
-    printf("\nO primeiro da lista e' %d\n", lista->valor);
-    imprimeLista(lista);
-    lista = insereposicao(lista, 20, 2);
-    printf("\nO primeiro da lista e' %d\n", lista->valor);
-    imprimeLista(lista);
+struct inteiro* obtemElementoNaPosicao(struct inteiro* lista, int posicao)
+{
+    // caso especial - lista vazia
+    if (lista == NULL)
+    {
+        return NULL;
+    }
+    // 2nd caso especial - inserir no inicio
+    if (posicao <= 0)
+    {
+        return lista;
+    }
+    // posicionar no sitio certo
+    struct inteiro* currentElement = lista;
+    int currentPosition = 0;
+    while (currentPosition < posicao - 1 && currentElement->next != NULL)
+    {
+        currentElement = currentElement->next;
+        currentPosition++;
+    }
 
-    calcularMedia(lista);
-    
-    return 0;
+    return currentElement->next;
+}
+
+int somaElementos(struct inteiro* lista)
+{
+    struct inteiro* currentElemento = lista;
+    int soma = 0;
+    while (currentElemento != NULL)
+    {
+        soma = soma + currentElemento->valor;
+        currentElemento = currentElemento->next;
+    }
+    return soma;
 }

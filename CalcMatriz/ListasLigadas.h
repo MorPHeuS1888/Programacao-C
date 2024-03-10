@@ -25,4 +25,6 @@ struct inteiro* obtemElementoNaPosicao(struct inteiro* lista, int posicao);
 
 int somaElementos(struct inteiro* lista);
 
+int obtemMaiorValor(struct inteiro* lista);
+
 #endif 

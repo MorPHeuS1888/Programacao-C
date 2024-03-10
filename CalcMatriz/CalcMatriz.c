@@ -1,7 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <ListasLigadas.h>
 #include <MatrizesLigadas.h>
+
+struct inteiro* matriz = NULL;
+int numeroLinhas = 0;
+int numeroColunas = 0;
+
+void ClearConsole()
+{
+#ifdef _WIN32
+    system("cls");
+#else 
+    printf("\033[2J\033[H");
+#endif
+}
+
+int GetMenuOption()
+{
+    int valor;
+    scanf_s("%d", &valor);
+    return valor;
+}
+
+void InputAnyText()
+{
+    char input[100]; // Assuming a maximum input length of 100 characters
+    fgets(input, sizeof input, stdin);
+    fgets(input, sizeof input, stdin);
+}
 
 struct inteiro* CalculaMaxSoma(struct inteiro* matriz, int linhas)
 {
@@ -28,35 +56,151 @@ struct inteiro* CalculaMaxSoma(struct inteiro* matriz, int linhas)
         int soma = somaElementos(resultado);
         if (soma >= somaFinal)
         {
+            // TODO limpar memoria do resultado final anterior
             resultadoFinal = resultado;
             somaFinal = soma;
         }
+        // TODO limpar memoria da novaMatriz
     }
     return resultadoFinal;
 };
 
-int main()
+void DisplayMenu()
 {
-    struct inteiro *matriz = NULL;
+    ClearConsole();
+    printf("+-------------------------------------------------------------------------------------+\n");
+    printf("|                   Estruturas de dados avançadas - Listas Ligadas                    |\n");
+    printf("|                                                                                     |\n");
+    printf("|                            1- Carregar a partir de ficheiro de texto                |\n");
+    printf("|                            2- Alteração dos valores                                 |\n");
+    printf("|                            3- Inserção de nova linha                                |\n");
+    printf("|                            4- Inserção de nova coluna                               |\n");
+    printf("|                            5- Remoção de linha                                      |\n");
+    printf("|                            6- Remoção de coluna                                     |\n");
+    printf("|                            7- Listagem da Tabela                                    |\n");
+    printf("|                            8- Cálculo da soma máxima                                |\n");
+    printf("|                                                                                     |\n");
+    printf("|                            9- Exit                                                  |\n");
+    printf("|                                                                                     |\n");
+    printf("+-------------------------------------------------------------------------------------+\n");
+}
 
-    int numeros[] = { 7, 53, 183, 439, 863,
-                    497, 383, 563, 79, 973,
-                    287, 63, 343, 169, 583,
-                    627, 343, 773, 959, 943,
-                    767, 473, 103, 699, 303 };
-
-    for (int i = 0; i < 25; i++)
+void CalculaSoma()
+{
+    if (numeroLinhas != numeroColunas)
     {
-        matriz = insereFim(matriz, numeros[i]);
+        printf("O calculo da soma maxima so e possivel em matrizes quadradas\n");
+        InputAnyText();
+        return;
     }
 
-    struct inteiro* resultado = CalculaMaxSoma(matriz, 5);
+    struct inteiro* resultado = CalculaMaxSoma(matriz, numeroLinhas);
 
     imprimeLista(resultado);
 
     int soma = somaElementos(resultado);
 
     printf("A soma final e' %d", soma);
+    getchar();
+
+    // TODO limpar memoria do resultado
+}
+
+int countDigits(int n) {
+    int count = 0;
+
+    // Handle negative numbers by taking absolute value
+    if (n < 0) {
+        n = -n;
+    }
+
+    // Count digits
+    do {
+        count++;
+        n /= 10;
+    } while (n != 0);
+
+    return count;
+}
+
+void ListagemTabela()
+{
+    ClearConsole();
+    // Determinar qual o maior valor
+    int maior = obtemMaiorValor(matriz);
+    // Determinar o numero de digitos do maior valor
+    int digitos = countDigits(maior);
+    // listar
+    for (int linha = 0; linha < numeroLinhas; linha++)
+    {
+        for (int coluna = 0; coluna < numeroColunas; coluna++)
+        {
+            // obter valor na linha/coluna
+            int valorMatriz = obtemValorMatriz(matriz, numeroLinhas, linha, coluna);
+
+            // Construct the format string dynamically
+            char format[10]; // Sufficiently large buffer
+            sprintf_s(format, sizeof(format), "%%%dd ", digitos);
+
+            // Append null terminator to format string
+            format[sizeof(format) - 1] = '\0';
+
+            // Print the number using the constructed format string
+            printf(format, valorMatriz);
+        }
+        printf("\n");
+    }
+    printf("Pressiona ENTER para continuar");
+    InputAnyText();
+}
+
+int main()
+{
+    int numeros[] = { 7, 53, 183, 439, 863,
+                    497, 383, 563, 79, 973,
+                    287, 63, 343, 169, 583,
+                    627, 343, 773, 959, 943,
+                    767, 473, 103, 699, 303 };
+
+    numeroLinhas = 5;
+    numeroColunas = 5;
+
+    for (int i = 0; i < 25; i++)
+    {
+        matriz = insereFim(matriz, numeros[i]);
+    }
+    
+    int option;
+    do
+    {
+        ClearConsole();
+        DisplayMenu();
+        option = GetMenuOption();
+        switch (option)
+        {
+        case 1:
+            
+            break;
+        case 2:
+            
+            break;
+        case 3:
+            
+            break;
+        case 7:
+            ListagemTabela();
+            break;
+        case 8: 
+            CalculaSoma();
+            break;
+        case 9:
+            break;
+
+        default:
+            break;
+        }
+
+    } while (option != 9);
 
     return 0;
 }

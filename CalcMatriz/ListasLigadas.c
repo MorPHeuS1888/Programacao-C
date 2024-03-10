@@ -146,3 +146,18 @@ int somaElementos(struct inteiro* lista)
     }
     return soma;
 }
+
+int obtemMaiorValor(struct inteiro* lista) 
+{
+    struct inteiro* currentElemento = lista;
+    int maior = 0;
+    while (currentElemento != NULL)
+    {
+        if(currentElemento->valor > maior)
+        {
+            maior = currentElemento->valor;
+        }
+        currentElemento = currentElemento->next;
+    }
+    return maior;
+}

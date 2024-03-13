@@ -101,7 +101,7 @@ void CalculaSoma()
     int soma = somaElementos(resultado);
 
     printf("A soma final e' %d", soma);
-    getchar();
+    InputAnyText();
 
     // TODO limpar memoria do resultado
 }
@@ -123,25 +123,27 @@ int countDigits(int n) {
     return count;
 }
 
-void ListagemTabela()
+void ListagemTabela(int mostralinhas, int mostracolunas, int mostramaisum)
 {
     ClearConsole();
     // Determinar qual o maior valor
     int maior = obtemMaiorValor(matriz);
     // Determinar o numero de digitos do maior valor
     int digitos = countDigits(maior);
+    // Construct the format string dynamically
+    char format[10]; // Sufficiently large buffer
+    sprintf_s(format, sizeof(format), "%%%dd ", digitos);
     // listar
     for (int linha = 0; linha < numeroLinhas; linha++)
     {
+        if (mostralinhas)
+        {
+            printf(format, linha);
+        }
         for (int coluna = 0; coluna < numeroColunas; coluna++)
         {
             // obter valor na linha/coluna
-            int valorMatriz = obtemValorMatriz(matriz, numeroLinhas, linha, coluna);
-
-            // Construct the format string dynamically
-            char format[10]; // Sufficiently large buffer
-            sprintf_s(format, sizeof(format), "%%%dd ", digitos);
-
+            int valorMatriz = obtemValorMatriz(matriz, numeroColunas, linha, coluna);
             // Append null terminator to format string
             format[sizeof(format) - 1] = '\0';
 
@@ -150,7 +152,103 @@ void ListagemTabela()
         }
         printf("\n");
     }
-    printf("Pressiona ENTER para continuar");
+    if (mostralinhas && mostramaisum)
+    {
+        printf(format, numeroLinhas);
+        printf("\n");
+    }
+
+    if (mostracolunas)
+    {
+        for (int coluna = 0; coluna < numeroColunas; coluna++)
+        {
+            printf(format, coluna);
+        }
+        if (mostracolunas && mostramaisum)
+        {
+            printf(format, numeroColunas);
+        }
+        printf("\n");
+    }
+}
+
+void RemocaoColuna()
+{
+    ClearConsole();
+    ListagemTabela(0, 1, 0);
+    printf("Qual o numero da coluna que quer remover? ");
+    int numeroColuna;
+    scanf_s("%d", &numeroColuna);
+    if (numeroColuna < 0 || numeroColuna >= numeroColunas)
+    {
+        printf("Numero de coluna errado");
+        InputAnyText();
+        return;
+    }
+    // remover a coluna escolhida
+    matriz = RemoveColunaMatrix(matriz, numeroLinhas, numeroColunas, numeroColuna);
+    numeroColunas--;
+    printf("Coluna removida :)");
+    InputAnyText();
+}
+
+void RemocaoLinha()
+{
+    ClearConsole();
+    ListagemTabela(1, 0, 0);
+    printf("Qual o numero da linha que quer remover? ");
+    int numeroLinha;
+    scanf_s("%d", &numeroLinha);
+    if (numeroLinha < 0 || numeroLinha >= numeroLinhas)
+    {
+        printf("Numero de linha errado");
+        InputAnyText();
+        return;
+    }
+    // remover a linha escolhida
+    matriz = RemoveLinhaMatrix(matriz, numeroLinhas, numeroColunas, numeroLinha);
+    numeroLinhas--;
+    printf("linha removida :)");
+    InputAnyText();
+}
+
+void InserirLinha()
+{
+    ClearConsole();
+    ListagemTabela(1, 0, 1);
+    printf("Em que posicao quer inserir a linha? ");
+    int numeroLinha;
+    scanf_s("%d", &numeroLinha);
+    if (numeroLinha < 0 || numeroLinha > numeroLinhas)
+    {
+        printf("Numero de linha errado");
+        InputAnyText();
+        return;
+    }
+    // inserir a linha na posicao escolhida
+    matriz = InsereLinhaMatrix(matriz, numeroLinhas, numeroColunas, numeroLinha);
+    numeroLinhas++;
+    printf("linha inserida :)");
+    InputAnyText();
+}
+
+void InserirColuna()
+{
+    ClearConsole();
+    ListagemTabela(0, 1, 1);
+    printf("Em que posicao quer inserir a coluna? ");
+    int numeroColuna;
+    scanf_s("%d", &numeroColuna);
+    if (numeroColuna < 0 || numeroColuna > numeroColunas)
+    {
+        printf("Numero de coluna errado");
+        InputAnyText();
+        return;
+    }
+    // inserir a coluna na posicao escolhida
+    matriz = InsereColunaMatrix(matriz, numeroLinhas, numeroColunas, numeroColuna);
+    numeroColunas++;
+    printf("Coluna inserida :)");
     InputAnyText();
 }
 
@@ -185,10 +283,21 @@ int main()
             
             break;
         case 3:
-            
+            InserirLinha();
+            break;
+        case 4:
+            InserirColuna();
+            break;
+        case 5:
+            RemocaoLinha();
+            break;
+        case 6: 
+            RemocaoColuna();
             break;
         case 7:
-            ListagemTabela();
+            ListagemTabela(0, 0, 0);
+            printf("Pressiona ENTER para continuar");
+            InputAnyText();
             break;
         case 8: 
             CalculaSoma();
@@ -201,6 +310,7 @@ int main()
         }
 
     } while (option != 9);
+
 
     return 0;
 }

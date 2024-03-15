@@ -252,6 +252,26 @@ void InserirColuna()
     InputAnyText();
 }
 
+void InserirValores()
+{
+    ClearConsole();
+    ListagemTabela(0, 0, 0);
+    printf("Em que posicao quer inserir o valor? ");
+    int numeroColuna;
+    scanf_s("%d", &numeroColuna);
+    while (numeroColuna < 0 || numeroColuna > numeroColunas)
+    {
+        printf("Numero de coluna errado");
+        InputAnyText();
+        return;
+    }
+    // inserir a coluna na posicao escolhida
+    matriz = InsereColunaMatrix(matriz, numeroLinhas, numeroColunas, numeroColuna);
+    numeroColunas++;
+    printf("Coluna inserida :)");
+    InputAnyText();
+}
+
 int main()
 {
     int numeros[] = { 7, 53, 183, 439, 863,
@@ -280,7 +300,7 @@ int main()
             
             break;
         case 2:
-            
+            InserirValores();
             break;
         case 3:
             InserirLinha();

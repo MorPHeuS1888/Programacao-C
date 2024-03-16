@@ -1,12 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 #include <ListasLigadas.h>
 #include <MatrizesLigadas.h>
+
 
 struct inteiro* matriz = NULL;
 int numeroLinhas = 0;
 int numeroColunas = 0;
+
+void ClearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 void ClearConsole()
 {
@@ -56,11 +64,13 @@ struct inteiro* CalculaMaxSoma(struct inteiro* matriz, int linhas)
         int soma = somaElementos(resultado);
         if (soma >= somaFinal)
         {
-            // TODO limpar memoria do resultado final anterior
+            // limpar memoria do resultado final anterior
+            LimpaMemoria(resultadoFinal);
             resultadoFinal = resultado;
             somaFinal = soma;
         }
-        // TODO limpar memoria da novaMatriz
+        // limpar memoria da novaMatriz
+        LimpaMemoria(novaMatriz);
     }
     return resultadoFinal;
 };
@@ -103,7 +113,8 @@ void CalculaSoma()
     printf("A soma final e' %d", soma);
     InputAnyText();
 
-    // TODO limpar memoria do resultado
+    // limpar memoria do resultado
+    LimpaMemoria(resultado);
 }
 
 int countDigits(int n) {
@@ -294,29 +305,80 @@ void InserirValores()
     InputAnyText();
 }
 
+void split_string(char* str, char delimitador, char* tokens[], int* num_tokens) {
+    char* ptr = str;
+    char* ptr1 = str;
+    int i = 0;
+
+    while (*ptr != '\0') 
+    {
+        if (*ptr == delimitador)
+        {
+            *ptr = '\0'; // Substitui o espaço por um caractere nulo
+            tokens[i] = ptr1; // Armazena o endereço do token
+            ptr++; // Avança o ponteiro para o próximo caractere
+            ptr1 = ptr;
+            i++;
+        }
+        else {
+            ptr++; // Avança o ponteiro para o próximo caractere
+        }
+    }
+
+    tokens[i] = ptr1; // Armazena o último token
+    *num_tokens = i + 1; // Número de tokens
+}
+
 void CarregarFicheiro()
 {
     printf("Qual é o nome do ficheiro que quer carregar? ");
-    
-    
+    char input[255]; // Assuming a maximum input length of 255 characters
+    scanf_s("%s", input, (unsigned)_countof(input));
+    FILE* file = fopen(input, "r");
+    if (file == NULL)
+    {
+        printf("Erro ao abrir ficheiro! :( ");
+        InputAnyText();
+        return;
+    }
+    ClearInputBuffer();
+
+    printf("Qual é o caracter para usar como separador? ");
+    char separador;
+    scanf_s("%c", &separador, 1);
+
+    // limpar a matriz
+    LimpaMemoria(matriz);
+
+    matriz = NULL;
+    numeroColunas = 0;
+    numeroLinhas = 0;
+
+    char line[255];
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        numeroLinhas++;
+        char* tokens[255]; // Array de tokens
+        int num_tokens;
+        split_string(line, separador, tokens, &num_tokens);
+        numeroColunas = num_tokens;
+        for (int i = 0; i < num_tokens; i++)
+        {
+            if (tokens[i] != NULL) 
+            {
+                int valor = atoi(tokens[i]);
+                matriz = insereFim(matriz, valor);
+            }
+        }
+    }
+    fclose(file);
+    printf("O ficheiro foi carregado! :)");
+    InputAnyText();
 }
 
 int main()
 {
-    int numeros[] = { 7, 53, 183, 439, 863,
-                    497, 383, 563, 79, 973,
-                    287, 63, 343, 169, 583,
-                    627, 343, 773, 959, 943,
-                    767, 473, 103, 699, 303 };
-
-    numeroLinhas = 5;
-    numeroColunas = 5;
-
-    for (int i = 0; i < 25; i++)
-    {
-        matriz = insereFim(matriz, numeros[i]);
-    }
-    
+  
     int option;
     do
     {

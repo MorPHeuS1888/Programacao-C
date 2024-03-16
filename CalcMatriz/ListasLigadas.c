@@ -161,3 +161,14 @@ int obtemMaiorValor(struct inteiro* lista)
     }
     return maior;
 }
+
+void LimpaMemoria(struct inteiro* lista)
+{
+    struct inteiro* currentElemento = lista;
+    while (currentElemento != NULL)
+    {
+        struct inteiro* eleminar = currentElemento;
+        currentElemento = currentElemento->next;
+        free(eleminar);
+    }
+}

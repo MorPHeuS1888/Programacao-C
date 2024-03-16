@@ -27,4 +27,6 @@ int somaElementos(struct inteiro* lista);
 
 int obtemMaiorValor(struct inteiro* lista);
 
+void LimpaMemoria(struct inteiro* lista);
+
 #endif 

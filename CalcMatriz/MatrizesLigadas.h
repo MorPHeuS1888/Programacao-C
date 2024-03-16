@@ -19,4 +19,7 @@ struct inteiro* InsereLinhaMatrix(struct inteiro* matriz, int numeroLinhas, int 
 // inserir coluna numa matriz
 struct inteiro* InsereColunaMatrix(struct inteiro* matriz, int numeroLinhas, int numeroColunas, int colunaInserir);
 
+// Alterar valor numa posicao da matriz
+void AlterarValorMatriz(struct inteiro* matriz, int numeroLinhas, int numeroColunas, int linha, int coluna, int valor);
+
 #endif

@@ -188,3 +188,26 @@ struct inteiro* InsereColunaMatrix(struct inteiro* matriz, int numeroLinhas, int
     // devolver nova matriz
     return novaMatriz;
 }
+
+void AlterarValorMatriz(struct inteiro* matriz, int numeroLinhas, int numeroColunas, int linha, int coluna, int valor) 
+{
+    // determinar posicao
+    int posicao = linha * numeroColunas + coluna;
+    // encontrar elemento na posicao
+    struct inteiro* currentElemento = matriz;
+    int posicaoElementoAtual = 0;
+    while (currentElemento != NULL && posicaoElementoAtual != posicao)
+    {
+        posicaoElementoAtual++;
+        currentElemento = currentElemento->next;
+    }
+
+    // confirmar
+    if (currentElemento == NULL)
+    {
+        return;
+    }
+
+    // alterar valor
+    currentElemento->valor = valor;
+}

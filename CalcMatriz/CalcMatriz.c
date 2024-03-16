@@ -255,8 +255,20 @@ void InserirColuna()
 void InserirValores()
 {
     ClearConsole();
-    ListagemTabela(0, 0, 0);
-    printf("Em que posicao quer inserir o valor? ");
+    ListagemTabela(1, 0, 0);
+    printf("Em que linha quer inserir o valor? ");
+    int numeroLinha;
+    scanf_s("%d", &numeroLinha);
+    while (numeroLinha < 0 || numeroLinha > numeroLinhas)
+    {
+        printf("Numero de linha errado");
+        InputAnyText();
+        return;
+    }
+
+    ClearConsole();
+    ListagemTabela(0, 1, 0);
+    printf("Em que coluna quer inserir o valor? ");
     int numeroColuna;
     scanf_s("%d", &numeroColuna);
     while (numeroColuna < 0 || numeroColuna > numeroColunas)
@@ -265,11 +277,28 @@ void InserirValores()
         InputAnyText();
         return;
     }
-    // inserir a coluna na posicao escolhida
-    matriz = InsereColunaMatrix(matriz, numeroLinhas, numeroColunas, numeroColuna);
-    numeroColunas++;
-    printf("Coluna inserida :)");
+    
+    printf("´Qual o valor que quer inserir? ");
+    int valor;
+    scanf_s("%d", &valor);
+    while (valor < 0)
+    {
+        printf("Valor errado");
+        InputAnyText();
+        return;
+    }
+
+    // alterar o valor na posicao escolhida
+    AlterarValorMatriz(matriz, numeroLinhas, numeroColunas, numeroLinha, numeroColuna, valor);
+    printf("Valor alterado :)");
     InputAnyText();
+}
+
+void CarregarFicheiro()
+{
+    printf("Qual é o nome do ficheiro que quer carregar? ");
+    
+    
 }
 
 int main()
@@ -297,7 +326,7 @@ int main()
         switch (option)
         {
         case 1:
-            
+            CarregarFicheiro();
             break;
         case 2:
             InserirValores();
